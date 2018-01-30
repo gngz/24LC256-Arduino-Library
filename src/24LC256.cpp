@@ -13,6 +13,10 @@ E24LC256::E24LC256(byte address)
 	Wire.begin();
 }
 
+/*
+	Function to detect if 24LC256 is present in bus with the address passed in constructor.
+	Returns true if eeprom is present in i2c bus.
+*/
 
 bool E24LC256::detect() {
 	byte code;
@@ -20,6 +24,11 @@ bool E24LC256::detect() {
 	code = Wire.endTransmission();
 	return (code == 0);
 }
+
+
+/*
+	Acknowledge Pooling Algoritihm recomended by Manufacturer	
+*/
 
 void E24LC256::ack_pooling()
 {
@@ -32,6 +41,13 @@ void E24LC256::ack_pooling()
 	}
 	while(code != 0);
 }
+
+/*
+	Function that writes a byte in EEPROM.
+	address parameter: eeprom cell address between 0x0000 and 0x7CFF
+	data parameter: byte to write to a eeprom cell.
+	Returns the state of operation (WRITE_SUCESS or WRITE_ERROR)
+*/
 
 int8_t E24LC256::writeByte(int address, byte data)
 {
@@ -51,6 +67,12 @@ int8_t E24LC256::writeByte(int address, byte data)
 	}
 }
 
+/*
+	Function that reads one byte from eeprom.
+	address parameter: eeprom cell address between 0x0000 and 0x7CFF
+	Returns the byte readed from eeprom.
+*/
+
 byte E24LC256::readByte(int address)
 {
 	ack_pooling();
@@ -62,6 +84,16 @@ byte E24LC256::readByte(int address)
 	Wire.available();
 	return Wire.read();
 }
+
+/*
+	Write multiple bytes into eeprom
+	address parameter:	address of the first eeprom cell to write
+	size parameter:	size of buffer
+	buffer parameter: address of buffer in primary memory.
+	Returns the state of operation (WRITE_ERROR or WRITE_SUCESS) 
+
+	To do: Check memory size.
+*/
 
 int8_t E24LC256::writePage(int address,int size, byte *buffer)
 {
@@ -142,6 +174,15 @@ int8_t E24LC256::writePage(int address,int size, byte *buffer)
 
 
 }
+
+/*
+	Read multiple eeprom cell address's and saves into a buffer
+	address parameter:	address of the first eeprom cell to read
+	size parameter:	size of buffer
+	buffer parameter: address of buffer in primary memory.
+	Returns the number of bytes readed
+
+*/
 
 int E24LC256::readPage(int address,int size, byte *buffer)
 {
