@@ -150,13 +150,16 @@ int E24LC256::readPage(int address,int size, byte *buffer)
 	Wire.write((byte) address>>8);
 	Wire.write((byte) address&0xFF);
 	Wire.endTransmission();
-	Wire.requestFrom(this->address,size);
 
-	for(int i = 0; Wire.available()>0;i++)
+
+	for(int i = 0;i<size;i++)
 	{
-
-			buffer[i] = Wire.read();
-			bytes_readed++;
+      Wire.requestFrom(this->address,size);
+      if(Wire.available())
+      {
+        buffer[i] = Wire.read();
+        bytes_readed++;
+      }
 	}
 
 
