@@ -6,7 +6,8 @@ Arduino Library for Microchip 24LC256 256K I2C CMOS Serial EEPROM
  - Buffer writing with wait for writing cycle.
 
 **To do:**
- - Multi eeprom support.
+ - Multi eeprom support.  
+ 
 Check the [wiki](https://github.com/gngz/24LC256-Arduino-Library/wiki) for documentation.
 
 License: BSD 2-Clause License
