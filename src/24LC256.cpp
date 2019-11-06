@@ -53,8 +53,8 @@ int8_t E24LC256::writeByte(int address, byte data)
 {
 	ack_pooling();
 	Wire.beginTransmission(this->address);
-	Wire.write((byte) address>>8);
-	Wire.write((byte) address & 0xFF);
+	Wire.write((byte) (address>>8));
+	Wire.write((byte) (address & 0xFF));
 	Wire.write((byte) data);
 
 	if(Wire.endTransmission() == 0)
@@ -77,8 +77,8 @@ byte E24LC256::readByte(int address)
 {
 	ack_pooling();
 	Wire.beginTransmission(this->address);
-	Wire.write((byte) address>>8);
-	Wire.write((byte) address&0xFF);
+	Wire.write((byte) (address>>8));
+	Wire.write((byte) (address&0xFF));
 	Wire.endTransmission();
 	Wire.requestFrom(this->address,(int) 1);
 	Wire.available();
@@ -98,20 +98,20 @@ byte E24LC256::readByte(int address)
 int8_t E24LC256::writePage(int address,int size, byte *buffer)
 {
 	ack_pooling();
-	
+
 	bool error = false;
 
 	if(size > 64)
 	{
-		
+
 		int new_size = size;
 		int current_buffer_loc;
 		int base_addr = address;
 		while(new_size > 64)
 		{
 			Wire.beginTransmission(this->address);
-			Wire.write((byte) base_addr>>8);
-			Wire.write((byte) base_addr&0xFF);
+			Wire.write((byte) (base_addr>>8));
+			Wire.write((byte) (base_addr&0xFF));
 
 			for(int i = current_buffer_loc; i<current_buffer_loc + 64;i++)
 			{
@@ -133,8 +133,8 @@ int8_t E24LC256::writePage(int address,int size, byte *buffer)
 		}
 
 		Wire.beginTransmission(this->address);
-		Wire.write((byte) base_addr>>8);
-		Wire.write((byte) base_addr&0xFF);
+		Wire.write((byte) (base_addr>>8));
+		Wire.write((byte) (base_addr&0xFF));
 
 		for(int i = current_buffer_loc ; i<new_size;i++)
 		{
@@ -147,8 +147,8 @@ int8_t E24LC256::writePage(int address,int size, byte *buffer)
 	else
 	{
 		Wire.beginTransmission(this->address);
-		Wire.write((byte) address>>8);
-		Wire.write((byte) address&0xFF);
+		Wire.write((byte) (address>>8));
+		Wire.write((byte) (address&0xFF));
 		for(int i = 0; i<size;i++)
 		{
 			Wire.write((byte) buffer[i]);
@@ -188,8 +188,8 @@ int E24LC256::readPage(int address,int size, byte *buffer)
 {
 	int bytes_readed;
 	Wire.beginTransmission(this->address);
-	Wire.write((byte) address>>8);
-	Wire.write((byte) address&0xFF);
+	Wire.write((byte) (address>>8));
+	Wire.write((byte) (address&0xFF));
 	Wire.endTransmission();
 
 
